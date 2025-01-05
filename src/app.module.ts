@@ -7,11 +7,13 @@ import { AuthGuard } from './jwt/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './jwt/constants';
 import { ModelModule } from './modelList/user.module';
+import { ProjectModule } from './projectList/user.module';
 
 @Module({
   imports: [
     UserModule,
     ModelModule,
+    ProjectModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
