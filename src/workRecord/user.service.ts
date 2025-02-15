@@ -8,44 +8,50 @@ import {
 import { CreateModelDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Project } from './entities/user.entity';
+import { WorkRecord } from './entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(Project) private readonly model: Repository<Project>,
+    @InjectRepository(WorkRecord)
+    private readonly model: Repository<WorkRecord>,
     private jwtService: JwtService,
   ) {}
   create(createModelDto: CreateModelDto) {
-    const data = new Project();
-    console.log(22, createModelDto);
-    data.name = createModelDto.name;
-    data.desc = createModelDto.desc;
+    const data = new WorkRecord();
+    data.projectId = createModelDto.projectId;
+    data.model = createModelDto.model;
     return this.model.save(data);
   }
 
   async findAll(
     query: {
       keyword?: string;
+      projectId?: number;
       pagination: { currentPage: number; pageSize: number };
-    } = { keyword: '', pagination: { currentPage: 1, pageSize: 10 } },
+    } = {
+      keyword: '',
+      projectId: undefined,
+      pagination: { currentPage: 1, pageSize: 10 },
+    },
   ) {
     const {
+      projectId,
       pagination: { currentPage, pageSize } = { currentPage: 1, pageSize: 10 },
     } = query;
     try {
       const data = await this.model.find({
         where: {
-          name: Like(`%${query?.keyword || ''}%`),
+          projectId,
         },
         skip: (currentPage - 1) * pageSize,
         take: pageSize,
       });
       const total = await this.model.count({
         where: {
-          name: Like(`%${query?.keyword || ''}%`),
+          projectId,
         },
       });
       return {
@@ -81,9 +87,7 @@ export class UserService {
     if (!item) {
       throw new NotFoundException(`Item with ID ${id} not found`);
     }
-
-    item.projectDesignJson = modelJson;
-
+    item.model = modelJson;
     return this.model.save(item);
   }
 

@@ -37,7 +37,6 @@ export class UserService {
     data.email = createUserDto.email;
     data.phone = createUserDto.phone;
     data.qq = createUserDto.qq;
-    console.log(16, createUserDto);
     return this.user.save(data);
   }
 
@@ -60,7 +59,7 @@ export class UserService {
       });
       const total = await this.user.count({
         where: {
-          name: Like(`%${query?.keyword}%`),
+          name: Like(`%${query?.keyword || ''}%`),
         },
       });
       return {
@@ -75,7 +74,9 @@ export class UserService {
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
-
+  checkStatus() {
+    return 'Already logged in';
+  }
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.user.update(id, updateUserDto);
   }

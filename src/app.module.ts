@@ -8,12 +8,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './jwt/constants';
 import { ModelModule } from './modelList/user.module';
 import { ProjectModule } from './projectList/user.module';
+import { WorkRecordModule } from './workRecord/user.module';
 
 @Module({
   imports: [
     UserModule,
     ModelModule,
     ProjectModule,
+    WorkRecordModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,

@@ -14,17 +14,18 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { WrapResponseDecorator } from './../utils/wrapResponseDecorator';
 import { Public } from './../jwt/utils';
 
-@Controller('projectDesigner')
+@Controller('workRecord')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post(`addProject`)
+  @Post(`addRecord`)
   @WrapResponseDecorator
   create(@Body() createUserDto: CreateModelDto) {
+    console.log(24, createUserDto);
     return this.userService.create(createUserDto);
   }
 
-  @Get(`getProjectList`)
+  @Get(`getRecordList`)
   @WrapResponseDecorator
   findAll(
     @Query()

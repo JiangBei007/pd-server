@@ -38,7 +38,7 @@ export class UserService {
     try {
       const data = await this.model.find({
         where: {
-          name: Like(`%${query?.keyword}%`),
+          name: Like(`%${query?.keyword || ''}%`),
         },
         skip: (currentPage - 1) * pageSize,
         take: pageSize,

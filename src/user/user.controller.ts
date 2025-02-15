@@ -61,4 +61,9 @@ export class UserController {
   login(@Body() userDto: CreateUserDto) {
     return this.userService.login(userDto);
   }
+  @Get(`check/status`)
+  @WrapResponseDecorator
+  check() {
+    return this.userService.checkStatus();
+  }
 }
